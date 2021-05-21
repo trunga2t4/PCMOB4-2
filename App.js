@@ -5,7 +5,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import AddScreen from "./screens/AddScreen";
 import NotesStack from "./screens/NotesStack";
-import firebase from "./database/firebaseDB";
 
 const Stack = createStackNavigator();
 export default function App() {
