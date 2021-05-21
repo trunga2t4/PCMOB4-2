@@ -19,7 +19,14 @@ export default function NotesScreen({ navigation, route }) {
       .firestore()
       .collection("todos")
       .onSnapshot((collection) => {
-        const updatedNotes = collection.docs.map((doc) => doc.data());
+        const updatedNotes = collection.docs.map((doc) => {
+          const noteObject = {
+            ...doc.data(),
+            id: doc.id,
+          };
+          console.log(noteObject);
+          return noteObject;
+        });
         setNotes(updatedNotes);
       });
     return () => {
@@ -52,7 +59,6 @@ export default function NotesScreen({ navigation, route }) {
       const newNote = {
         title: route.params.text,
         done: false,
-        id: notes.length.toString(),
       };
       //setNotes([...notes, newNote]);
       firebase.firestore().collection("todos").add(newNote);
@@ -66,15 +72,7 @@ export default function NotesScreen({ navigation, route }) {
   // This deletes an individual note
   function deleteNote(id) {
     console.log("Deleting " + id);
-
-    firebase
-      .firestore()
-      .collection("todos")
-      .where("id", "==", id)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => doc.ref.delete());
-      });
+    db.doc(id).delete();
     // To delete that item, we filter out the item we don't want
     //setNotes(notes.filter((item) => item.id !== id));
   }
