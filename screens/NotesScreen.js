@@ -9,6 +9,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import firebase from "../database/firebaseDB";
 
+const db = firebase.firestore().collection("todos");
+
 export default function NotesScreen({ navigation, route }) {
   const [notes, setNotes] = useState([]);
 
@@ -64,8 +66,17 @@ export default function NotesScreen({ navigation, route }) {
   // This deletes an individual note
   function deleteNote(id) {
     console.log("Deleting " + id);
+
+    firebase
+      .firestore()
+      .collection("todos")
+      .where("id", "==", id)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => doc.ref.delete());
+      });
     // To delete that item, we filter out the item we don't want
-    setNotes(notes.filter((item) => item.id !== id));
+    //setNotes(notes.filter((item) => item.id !== id));
   }
 
   // The function to render each row in our FlatList
