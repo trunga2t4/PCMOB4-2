@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,10 +6,23 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
+import firebase from "../database/firebaseDB";
 
-export default function AddScreen({ navigation }) {
+const db = firebase.firestore().collection("todos");
+
+export default function EditScreen({ route, navigation }) {
   const [text, setText] = useState("");
-  const id = "none";
+  const id = route.params.id;
+
+  useEffect(() => {
+    db.doc(id)
+      .get()
+      .then((doc) => {
+        const dbItem = doc.data();
+        console.log(dbItem.title);
+        setText(dbItem.title);
+      });
+  }, []);
 
   return (
     <View style={[styles.container, { backgroundColor: "white" }]}>
