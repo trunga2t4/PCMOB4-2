@@ -11,15 +11,15 @@ export default function NotesStack() {
         name="Notes"
         component={NotesScreen}
         options={{
-          title: "Notes, a Todo App",
+          title: "Notes, Requestes and More...",
           headerStyle: {
-            backgroundColor: "yellow",
+            backgroundColor: "navy",
             height: 100,
             shadowColor: "black",
             shadowOpacity: 0.2,
             shadowRadius: 5,
           },
-          headerTintColor: "#f55",
+          headerTintColor: "#ffc",
           headerTitleStyle: {
             fontSize: 24,
             fontWeight: "bold",
@@ -30,19 +30,8 @@ export default function NotesStack() {
         name="Edit Screen"
         component={EditScreen}
         options={{
+          headerShown: false,
           title: "Edit Note",
-          headerStyle: {
-            backgroundColor: "yellow",
-            height: 100,
-            shadowColor: "black",
-            shadowOpacity: 0.2,
-            shadowRadius: 5,
-          },
-          headerTintColor: "#f55",
-          headerTitleStyle: {
-            fontSize: 24,
-            fontWeight: "bold",
-          },
         }}
       />
     </InnerStack.Navigator>

@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-} from "react-native";
-import { Ionicons, AntDesign, Entypo } from "@expo/vector-icons";
+import { StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, FlatList, ScrollView } from "react-native";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import firebase from "../database/firebaseDB";
 
 const db = firebase.firestore().collection("todos");
@@ -34,7 +28,6 @@ export default function NotesScreen({ navigation, route }) {
     };
   }, []);
 
-  // This is to set up the top right button
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -42,10 +35,9 @@ export default function NotesScreen({ navigation, route }) {
           <Ionicons
             name="ios-create-outline"
             size={30}
-            color="black"
             style={{
-              color: "#f55",
-              marginRight: 10,
+              color: "#ffc",
+              marginRight: 20,
             }}
           />
         </TouchableOpacity>
@@ -63,7 +55,6 @@ export default function NotesScreen({ navigation, route }) {
           created: firebase.firestore.FieldValue.serverTimestamp(),
           updated: firebase.firestore.FieldValue.serverTimestamp(),
         };
-        //setNotes([...notes, newNote]);
         db.add(newNote);
       } else {
         console.log("Edit " + route.params.id);
@@ -83,12 +74,9 @@ export default function NotesScreen({ navigation, route }) {
     navigation.navigate("Edit Screen", { navigation, id });
   }
 
-  // This deletes an individual note
   function deleteNote(id) {
     console.log("Deleting " + id);
     db.doc(id).delete();
-    // To delete that item, we filter out the item we don't want
-    //setNotes(notes.filter((item) => item.id !== id));
   }
 
   function setDoneNote(id, value) {
@@ -97,8 +85,6 @@ export default function NotesScreen({ navigation, route }) {
       done: value,
       updated: firebase.firestore.FieldValue.serverTimestamp(),
     });
-    // To delete that item, we filter out the item we don't want
-    //setNotes(notes.filter((item) => item.id !== id));
   }
 
   // The function to render each row in our FlatList
@@ -108,10 +94,8 @@ export default function NotesScreen({ navigation, route }) {
         <View
           style={{
             padding: 10,
-            paddingTop: 20,
-            paddingBottom: 20,
             borderBottomColor: "#ccc",
-            borderBottomWidth: 1,
+            borderBottomWidth: 2,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
@@ -120,19 +104,19 @@ export default function NotesScreen({ navigation, route }) {
             onPress={() => editNote(item.id)}
             style={{ flex: 0.1 }}
           >
-            <AntDesign name="check" size={16} color="black" />
+            <AntDesign name="edit" size={24} color="blue" />
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 0.8 }}
             onPress={() => setDoneNote(item.id, true)}
+            style={{ flex: 0.8 }}
           >
-            <Text>{item.title}</Text>
+            <Text style={styles.text}>{item.title}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => deleteNote(item.id)}
             style={{ flex: 0.1 }}
           >
-            <Ionicons name="trash" size={16} color="#944" />
+            <Ionicons name="trash" size={24} color="#944" />
           </TouchableOpacity>
         </View>
       );
@@ -145,8 +129,6 @@ export default function NotesScreen({ navigation, route }) {
         <View
           style={{
             padding: 10,
-            paddingTop: 20,
-            paddingBottom: 20,
             borderBottomColor: "#ccc",
             borderBottomWidth: 1,
             flexDirection: "row",
@@ -158,19 +140,19 @@ export default function NotesScreen({ navigation, route }) {
             onPress={() => editNote(item.id)}
             style={{ flex: 0.1 }}
           >
-            <AntDesign name="check" size={16} color="black" />
+            <AntDesign name="edit" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flex: 0.8 }}
             onPress={() => setDoneNote(item.id, false)}
           >
-            <Text>{item.title}</Text>
+            <Text style={styles.textDone}>{item.title}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => deleteNote(item.id)}
             style={{ flex: 0.1 }}
           >
-            <Ionicons name="trash" size={16} color="#944" />
+            <Ionicons name="trash" size={24} color="black" />
           </TouchableOpacity>
         </View>
       );
@@ -178,12 +160,7 @@ export default function NotesScreen({ navigation, route }) {
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={[
-        styles.container,
-        { justifyContent: "flex-start" },
-      ]}
-    >
+    <ScrollView contentContainerStyle={styles.container}>
       <FlatList
         data={notes}
         renderItem={renderItem}
@@ -205,5 +182,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffc",
     alignItems: "center",
     justifyContent: "center",
+    justifyContent: "flex-start",
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  textDone: {
+    fontSize: 18,
+    fontWeight: "100",
   },
 });

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-} from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import firebase from "../database/firebaseDB";
 
 const db = firebase.firestore().collection("todos");
@@ -25,8 +21,11 @@ export default function EditScreen({ route, navigation }) {
   }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: "white" }]}>
-      <Text style={{ fontSize: 24 }}>What do you want to add?</Text>
+    <View style={styles.container}>
+      <View>
+        <FontAwesome5 name="chess-queen" size={120} color="navy" />
+      </View>
+      <Text style={styles.title}>What do you want to change, dear?</Text>
       <TextInput
         style={styles.textInput}
         value={text}
@@ -41,12 +40,11 @@ export default function EditScreen({ route, navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("Notes")}
         >
           <Text style={styles.buttonText}>Dismiss</Text>
         </TouchableOpacity>
       </View>
-      {/* <Text>{text.toUpperCase()}</Text> */}
     </View>
   );
 }
@@ -58,23 +56,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  title: {
+    padding: 10,
+    marginTop: 20,
+    fontSize: 24,
+    fontWeight: "700",
+    color: "navy",
+  },
   textInput: {
-    borderColor: "grey",
+    borderColor: "navy",
+    backgroundColor: "white",
     borderWidth: 1,
     width: "80%",
     padding: 10,
     marginTop: 20,
+    fontSize: 18,
   },
   button: {
     padding: 10,
-    backgroundColor: "orange",
+    backgroundColor: "navy",
     borderRadius: 5,
     margin: 10,
     marginTop: 30,
-    width: 80,
+    width: 120,
   },
   buttonText: {
     textAlign: "center",
+    color: "#ffc",
+    fontSize: 18,
   },
   buttonContainer: {
     flexDirection: "row",
